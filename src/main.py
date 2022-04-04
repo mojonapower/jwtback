@@ -38,6 +38,22 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+
+@app.route('/registro', methods=['POST'])
+def register():
+    body = request.get_json()
+    email = body['email']
+    password = body['password']
+
+    user = User(email=email, password=password, is_active = True)
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({'email': email,
+    "password": password})
+
+
+
 @app.route('/user', methods=['GET','POST'])
 def handle_hello():
     #cuando es un get conseguiremos todos los usuarios 
